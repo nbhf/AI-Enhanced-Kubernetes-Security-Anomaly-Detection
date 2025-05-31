@@ -1,0 +1,72 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: prometheus-kube-prometheus-kubelet
+  namespace: monitoring
+  labels:
+    release: prometheus
+    app: kube-prometheus-stack-kubelet
+    app.kubernetes.io/instance: prometheus
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    app.kubernetes.io/version: 72.7.0
+    chart: kube-prometheus-stack-72.7.0
+    heritage: Helm
+  annotations:
+    meta.helm.sh/release-name: prometheus
+    meta.helm.sh/release-namespace: monitoring
+spec:
+  attachMetadata:
+    node: false
+  endpoints:
+    - port: https-metrics
+      scheme: https
+      path: /metrics
+      bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      tlsConfig:
+        caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        insecureSkipVerify: true
+      honorLabels: true
+      honorTimestamps: true
+      relabelings:
+        - action: replace
+          sourceLabels:
+            - __metrics_path__
+          targetLabel: metrics_path
+    - port: https-metrics
+      scheme: https
+      path: /metrics/cadvisor
+      bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      tlsConfig:
+        caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        insecureSkipVerify: true
+      honorLabels: true
+      honorTimestamps: true
+      interval: 10s
+      trackTimestampsStaleness: true
+      relabelings:
+        - action: replace
+          sourceLabels:
+            - __metrics_path__
+          targetLabel: metrics_path
+    - port: https-metrics
+      scheme: https
+      path: /metrics/probes
+      bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      tlsConfig:
+        caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        insecureSkipVerify: true
+      honorLabels: true
+      honorTimestamps: true
+      relabelings:
+        - action: replace
+          sourceLabels:
+            - __metrics_path__
+          targetLabel: metrics_path
+  jobLabel: k8s-app
+  namespaceSelector:
+    any: true
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kubelet
+      k8s-app: kubelet
