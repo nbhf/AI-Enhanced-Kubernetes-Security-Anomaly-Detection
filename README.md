@@ -1,5 +1,4 @@
 
-````markdown
 # 🛡️ AI-Enhanced Kubernetes Security & Anomaly Detection
 
 ## 📌 Project Overview
@@ -57,7 +56,6 @@ minikube start --nodes=3 -p pfa
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm install prometheus prometheus-community/kube-prometheus-stack -n monitoring --create-namespace
 ```
-````
 
 ### 2️⃣ Deploy Applications
 
