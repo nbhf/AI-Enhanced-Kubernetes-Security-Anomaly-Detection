@@ -10,7 +10,7 @@ The focus is on detecting abnormal behaviors such as **CPU, memory, or network a
 ---
 
 ## ⚙️ System Architecture
-![Architechture](Cluster Architechture.png)
+![Architechture](Cluster_Architechture.png)
 
 - **Cluster**: Kubernetes (Minikube, 3 nodes)  
 - **Applications deployed**:  
