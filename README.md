@@ -56,7 +56,7 @@ The collected data is labeled (normal / abnormal) and prepared for ML model trai
 minikube start --nodes=3 -p pfa
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm install prometheus prometheus-community/kube-prometheus-stack -n monitoring --create-namespace
-````
+```
 
 ### 2️⃣ Deploy Applications
 
