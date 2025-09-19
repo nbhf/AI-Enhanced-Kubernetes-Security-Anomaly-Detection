@@ -1,0 +1,42 @@
+# cadvisor-daemonset.yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: cadvisor
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      name: cadvisor
+  template:
+    metadata:
+      labels:
+        name: cadvisor
+    spec:
+      containers:
+      - name: cadvisor
+        image: gcr.io/cadvisor/cadvisor:v0.47.0
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: root
+          mountPath: /rootfs
+        - name: var-run
+          mountPath: /var/run
+        - name: sys
+          mountPath: /sys
+        - name: docker
+          mountPath: /var/lib/docker
+      volumes:
+      - name: root
+        hostPath:
+          path: /
+      - name: var-run
+        hostPath:
+          path: /var/run
+      - name: sys
+        hostPath:
+          path: /sys
+      - name: docker
+        hostPath:
+          path: /var/lib/docker
